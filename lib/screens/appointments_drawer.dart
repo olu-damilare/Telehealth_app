@@ -26,20 +26,18 @@ class _AppointmentsDrawerState extends State<AppointmentsDrawer> {
 
   Future<bool> join(HMSSDK hmssdk, String username) async {
     String roomId = Constants.roomId;
-    Uri endPoint = Uri.parse("https://prod-in.100ms.live/hmsapi/telehealthapp.app.100ms.live/api/token");
+    Uri endPoint = Uri.parse("https://prod-in.100ms.live/hmsapi/decoder.app.100ms.live/api/token");
     Response response = await post(endPoint, body: {
       'user_id': username,
       'room_id':roomId,
-      'role': "Patient"
+      'role': "host"
     });
     var body = json.decode(response.body);
-    print("response body --> $body");
     if (body == null || body['token'] == null) {
       return false;
     }
-
-    HMSConfig config = HMSConfig(authToken: body['token'], userName: "user");
-    print("Config --> ${config.authToken}");
+    print(body);
+    HMSConfig config = HMSConfig(authToken: body['token'], userName: username);
     await hmssdk.join(config: config);
     return true;
   }
@@ -52,7 +50,6 @@ class _AppointmentsDrawerState extends State<AppointmentsDrawer> {
 
     SdkInitializer.hmssdk.build();
     bool ans = await join(SdkInitializer.hmssdk, username);
-    print("ans --> $ans");
     if (!ans) {
       return false;
 
@@ -70,7 +67,8 @@ class _AppointmentsDrawerState extends State<AppointmentsDrawer> {
     for(Appointment appointment in widget.appointments){
      appointmentsWidget.add(
          ListTile(
-        leading: Icon(
+        leading: isLoading ? CircularProgressIndicator()
+        : Icon(
             Icons.local_hospital,
           color: Colors.red,
         ),
@@ -87,6 +85,7 @@ class _AppointmentsDrawerState extends State<AppointmentsDrawer> {
                  );
                } else {
                  const SnackBar(content: Text("Unable to join meeting"));
+                 Navigator.of(context).pop();
                }
              }
       )
