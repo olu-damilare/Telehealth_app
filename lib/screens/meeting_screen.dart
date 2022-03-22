@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import 'package:http/http.dart';
-import 'package:telehealth_app/constants/Constants.dart';
+// import 'package:telehealth_app/constants/Constants.dart';
 import 'package:telehealth_app/setup/app_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:telehealth_app/setup/sdkinitializer.dart';
@@ -105,7 +105,7 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
         value: Provider.of<AppManager>(
             context,
             listen: true),
-        child: MessageScreen(appManager: _appManager,),
+        child: MessageScreen(),
       ),
 
       body: Stack(
@@ -120,11 +120,11 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
                 child: Column(
                   children: [
                     Flexible(
-                    child:
-                    (remoteTrack != null)
-                      ? HMSVideoView(track: remoteTrack as HMSVideoTrack, matchParent: false)
+                        child:
+                        (remoteTrack != null)
+                            ? HMSVideoView(track: remoteTrack as HMSVideoTrack, matchParent: false)
                             : const Center(
-                                child: Text('Waiting for the other part to join!'))
+                            child: Text('Waiting for the other part to join!'))
                     ),
 
                   ],
@@ -141,42 +141,42 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: IconButton(
-                        icon: isAudioOn
-                            ? const Icon(Icons.mic)
-                            : const Icon(Icons.mic_off),
-                        onPressed: () {
-                          SdkInitializer.hmssdk.switchAudio();
-                          setState(() {
-                            isAudioOn = !isAudioOn;
-                          });
+                  CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: IconButton(
+                      icon: isAudioOn
+                          ? const Icon(Icons.mic)
+                          : const Icon(Icons.mic_off),
+                      onPressed: () {
+                        SdkInitializer.hmssdk.switchAudio();
+                        setState(() {
+                          isAudioOn = !isAudioOn;
+                        });
 
-                        },
-                        color: Colors.blue,
-                      ),
+                      },
+                      color: Colors.blue,
                     ),
-                    CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: IconButton(
-                        icon: isVideoOn
-                            ? const Icon(Icons.videocam)
-                            : const Icon(Icons.videocam_off),
-                        onPressed: () {
-                          SdkInitializer.hmssdk.switchVideo(isOn: isVideoOn);
-                          if(!isVideoOn){
-                            SdkInitializer.hmssdk.startCapturing();
-                          }else{
-                            SdkInitializer.hmssdk.stopCapturing();
-                          }
-                          setState(() {
-                            isVideoOn = !isVideoOn;
-                          });
-                        },
-                        color: Colors.blue,
-                      ),
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: IconButton(
+                      icon: isVideoOn
+                          ? const Icon(Icons.videocam)
+                          : const Icon(Icons.videocam_off),
+                      onPressed: () {
+                        SdkInitializer.hmssdk.switchVideo(isOn: isVideoOn);
+                        if(!isVideoOn){
+                          SdkInitializer.hmssdk.startCapturing();
+                        }else{
+                          SdkInitializer.hmssdk.stopCapturing();
+                        }
+                        setState(() {
+                          isVideoOn = !isVideoOn;
+                        });
+                      },
+                      color: Colors.blue,
                     ),
+                  ),
 
                   CircleAvatar(
                     backgroundColor: Colors.black,
@@ -277,135 +277,3 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
     );
   }
 }
-
-
-//
-// Widget videoPageView({required List<PeerTracKNode> filteredList}) {
-//     List<Widget> pageChild = [];
-//     if (_appManager.currentScreenShareTrack != null) {
-//       pageChild.add(RotatedBox(
-//         quarterTurns: 1,
-//         child: Container(
-//             margin:
-//             const EdgeInsets.only(bottom: 0, left: 0, right: 100, top: 0),
-//             child: Observer(builder: (context) {
-//               return HMSVideoView(
-//                   track: _appManager.currentScreenShareTrack as HMSVideoTrack);
-//             })),
-//       ));
-//     }
-//     for (int i = 0; i < filteredList.length; i = i + 6) {
-//       if (filteredList.length - i > 5) {
-//         Widget temp = singleVideoPageView(6, i, filteredList);
-//         pageChild.add(temp);
-//       } else {
-//         Widget temp =
-//         singleVideoPageView(filteredList.length - i, i, filteredList);
-//         pageChild.add(temp);
-//       }
-//     }
-//     return PageView(
-//       children: pageChild,
-//     );
-//   }
-//
-//   Widget singleVideoPageView(int count, int index, List<PeerTracKNode> tracks) {
-//     return Align(
-//         alignment: Alignment.center,
-//         child: Container(
-//             margin: const EdgeInsets.only(
-//                 bottom: 100, left: 10, right: 10, top: 10),
-//             child: Observer(builder: (context) {
-//               return videoViewGrid(count, index, tracks);
-//             })));
-//   }
-//
-//   Widget videoViewGrid(int count, int start, List<PeerTracKNode> tracks) {
-//     ObservableMap<String, HMSTrackUpdate> trackUpdate =
-//         _appManager.trackStatus;
-//     return GridView.builder(
-//       itemCount: count,
-//       physics: const NeverScrollableScrollPhysics(),
-//       itemBuilder: (itemBuilder, index) {
-//         return Observer(builder: (context) {
-//           return videoTile(
-//               tracks[start + index],
-//               !(tracks[start + index].track?.peer?.isLocal ?? false
-//                   ? !isVideoOn
-//                   : (trackUpdate[tracks[start + index].peerId]) ==
-//                   HMSTrackUpdate.trackMuted),
-//               MediaQuery.of(context).size.width / 2 - 25);
-//         });
-//       },
-//       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//           crossAxisCount: 2,
-//           mainAxisSpacing: 5,
-//           crossAxisSpacing: 5,
-//           childAspectRatio: 0.88),
-//     );
-//   }
-//
-//   Widget videoTile(
-//       PeerTracKNode track, bool isVideoMuted, double size) {
-//     return Stack(
-//       children: [
-//         Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Align(
-//               alignment: Alignment.center,
-//               child: SizedBox(
-//                 width: size,
-//                 height: size,
-//                 child: ClipRRect(
-//                     borderRadius: BorderRadius.circular(10),
-//                     child: (track.track != null && isVideoMuted)
-//                         ? HMSVideoView(
-//                       track: track.track as HMSVideoTrack,
-//                     )
-//                         : Container(
-//                         width: 200,
-//                         height: 200,
-//                         color: Colors.black,
-//                         child: Center(
-//                           child: CircleAvatar(
-//                             radius: 50,
-//                             backgroundColor: Colors.green,
-//                             child: track.name.contains(" ")
-//                                 ? Text(
-//                               (track.name.toString().substring(0, 1) +
-//                                   track.name
-//                                       .toString()
-//                                       .split(" ")[1]
-//                                       .substring(0, 1))
-//                                   .toUpperCase(),
-//                               style: const TextStyle(
-//                                   fontSize: 18,
-//                                   fontWeight: FontWeight.w700),
-//                             )
-//                                 : Text(track.name
-//                                 .toString()
-//                                 .substring(0, 1)
-//                                 .toUpperCase()),
-//                           ),
-//                         ))),
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             Align(
-//               alignment: Alignment.bottomCenter,
-//               child: Text(
-//                 track.name,
-//                 style: const TextStyle(fontWeight: FontWeight.w700),
-//               ),
-//             )
-//           ],
-//         ),
-//
-//       ],
-//     );
-//   }
-
-
