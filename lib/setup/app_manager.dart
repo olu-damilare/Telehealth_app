@@ -37,17 +37,23 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
 
   //Method to listen to Error Updates
   @override
-  void onError({required HMSException error}) {}
+  void onError({required HMSException error}) {
+    print(error.message);
+  }
 
   //Method to listen to local Peer join update
   @override
   void onJoin({required HMSRoom room}) {
+    print("before joining");
     for (HMSPeer each in room.peers!) {
       if (each.isLocal) {
         localPeer = each;
         break;
       }
     }
+    print("after joining");
+    print("local peer --> $localPeer");
+
   }
 
   //Method to listen to remote peer messages
