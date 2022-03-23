@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:telehealth_app/models/message.dart';
 import 'package:telehealth_app/setup/app_manager.dart';
@@ -15,7 +13,6 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
   late double width;
-  late List<HMSRole> hmsRoles;
   TextEditingController messageTextController = TextEditingController();
 
   @override
@@ -23,7 +20,6 @@ class _MessageScreenState extends State<MessageScreen> {
     width = MediaQuery.of(context).size.width;
     List<Message> _messages =
         Provider.of<AppManager>(context, listen: true).messages;
-    Provider.of<AppManager>(context, listen: true).isNewMessage = false;
     final localPeer = Provider.of<AppManager>(context, listen: false).localPeer;
     return Drawer(
       child: SafeArea(
@@ -58,15 +54,10 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Observer(
-                    builder: (_) {
-                      // if (!_appManager.isMeetingStarted) {
-                      //   return const SizedBox();
-                      // }
-                      if (_messages.isEmpty) {
-                        return Center(child: const Text('No messages'));
-                      }
-                      return ListView.separated(
+                  child:
+                     _messages.isEmpty ?
+                        Center(child: const Text('No messages'))
+                  : ListView.separated(
                         itemCount: _messages.length,
                         itemBuilder: (itemBuilder, index) {
                           return Container(
@@ -114,9 +105,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         separatorBuilder: (BuildContext context, int index) {
                           return const Divider();
                         },
-                      );
-                    },
-                  ),
+                      ),
                 ),
                 Container(
                   color: Colors.amberAccent,
@@ -150,11 +139,6 @@ class _MessageScreenState extends State<MessageScreen> {
                             });
                             messageTextController.text = "";
                           }
-
-                          // String message = messageTextController.text;
-                          // if (message.isEmpty) return;
-                          // _appManager.sendBroadcastMessage(message);
-                          // messageTextController.clear();
                         },
                         child: const Icon(
                           Icons.send,
