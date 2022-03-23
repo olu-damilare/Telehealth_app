@@ -1,7 +1,9 @@
+import 'package:flash/flash.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:telehealth_app/models/appointment.dart';
 import 'package:telehealth_app/screens/appointments_drawer.dart';
+
 
 class BookAppointment extends StatefulWidget {
   final AppointmentsDrawer appointmentsDrawer;
@@ -47,6 +49,38 @@ class _BookAppointmentState extends State<BookAppointment> {
     });
   }
 
+  void _showTopFlash({FlashBehavior style = FlashBehavior.fixed}) {
+    showFlash(
+      context: context,
+      duration: const Duration(seconds: 10),
+      persistent: true,
+      builder: (_, controller) {
+        return Flash(
+          controller: controller,
+          backgroundColor: Colors.amberAccent,
+          brightness: Brightness.light,
+          barrierColor: Colors.black38,
+          barrierDismissible: true,
+          behavior: style,
+          position: FlashPosition.top,
+          child: FlashBar(
+            content: Text(
+                'Successfully booked an appointment.',
+              style: TextStyle(
+                color: Colors.white
+              ),
+            ),
+            primaryAction: TextButton(
+              onPressed: () {},
+              child: Text('Dismiss',
+                  style: TextStyle(color: Colors.blue)),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 // This method validates the user input before creating the appointment.
   void _submitData() {
     final username = _usernameController.text;
@@ -54,13 +88,15 @@ class _BookAppointmentState extends State<BookAppointment> {
     if (username.isEmpty || _selectedDate == null) {
       return;
     }
-
     _addNewAppointment();
     Navigator.of(context).pop();
+    _showTopFlash();
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Book an appointment'),
