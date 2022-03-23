@@ -13,7 +13,7 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
   bool _disposed = false;
   List<Message> messages = [];
   late HMSPeer localPeer;
-  bool isNewMessage = false;
+
 
   //To dispose the objects when user leaves the room
   @override
@@ -51,9 +51,6 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
         break;
       }
     }
-    print("after joining");
-    print("local peer --> $localPeer");
-
   }
 
   //Method to listen to remote peer messages
@@ -67,7 +64,6 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
         senderName: message.sender!.name
     );
     messages.add(_newMessage);
-    isNewMessage = true;
     notifyListeners();
   }
 
@@ -80,14 +76,12 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
       case HMSPeerUpdate.peerJoined:
         messages = [];
         remotePeer = peer;
-        isNewMessage = false;
         remoteAudioTrack = peer.audioTrack;
         remoteVideoTrack = peer.videoTrack;
         break;
     // Setting up the remote peer to null so that we can render UI accordingly
       case HMSPeerUpdate.peerLeft:
         messages = [];
-        isNewMessage = false;
         remotePeer = null;
         break;
       case HMSPeerUpdate.audioToggled:
