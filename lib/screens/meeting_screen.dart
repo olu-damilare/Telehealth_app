@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
-import 'package:http/http.dart';
-// import 'package:telehealth_app/constants/Constants.dart';
 import 'package:telehealth_app/setup/app_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:telehealth_app/setup/sdkinitializer.dart';
@@ -22,8 +20,6 @@ class Meeting extends StatefulWidget {
 }
 
 class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
-  late AppManager _appManager;
-  // late HmsSdkInteractor _hmsSdkInteractor;
   bool selfLeave = false;
   bool isAudioOn = true;
   bool isVideoOn = true;
@@ -32,61 +28,23 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
   HMSLocalPeer? localPeer;
 
 
-  // initMeeting() async {
-  //   bool ans = await join(SdkInitializer.hmssdk, widget.role, widget.username);
-  //   if (!ans) {
-  //     const SnackBar(content: Text("Unable to join meeting."));
-  //     Navigator.of(context).pop();
-  //   }
-  //   _appManager.startListen();
-  // }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-    _appManager = AppManager();
     // initMeeting();
   }
 
-  // Future<bool> join(HMSSDK hmssdk, String role, String username) async {
-  //   String roomId = Constants.roomId;
-  //   Uri endPoint = Uri.parse("https://prod-in.100ms.live/hmsapi/telehealthapp.app.100ms.live/api/token");
-  //   Response response = await post(endPoint, body: {
-  //     'user_id': username,
-  //     'room_id':roomId,
-  //     'role': role
-  //   });
-  //   var body = json.decode(response.body);
-  //   print(body);
-  //   if (body == null || body['token'] == null) {
-  //     return false;
-  //   }
-  //
-  //   HMSConfig config = HMSConfig(authToken: body['token'], userName: "user");
-  //   await hmssdk.join(config: config);
-  //   return true;
-  // }
-
-
-
-  @override
+    @override
   Widget build(BuildContext context) {
 
 
-    final _isVideoOff = context.select<AppManager, bool>(
-            (user) => user.remoteVideoTrack?.isMute ?? true);
-    final _isAudioOff = context.select<AppManager, bool>(
-            (user) => user.remoteAudioTrack?.isMute ?? true);
-    final _peer =
     context.select<AppManager, HMSPeer?>((user) => user.remotePeer);
     final remoteTrack = context
         .select<AppManager, HMSTrack?>((user) => user.remoteVideoTrack);
     final localVideoTrack = context
         .select<AppManager, HMSVideoTrack?>((user) => user.localVideoTrack);
-    bool isNewMessage =
-    context.select<AppManager, bool>((user) => user.isNewMessage);
-
 
     return Scaffold(
       backgroundColor: Colors.grey,
@@ -124,7 +82,7 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
                         (remoteTrack != null)
                             ? HMSVideoView(track: remoteTrack as HMSVideoTrack, matchParent: false)
                             : const Center(
-                            child: Text('Waiting for the other part to join!'))
+                            child: Text('Waiting for the Doctor to join!'))
                     ),
 
                   ],
@@ -216,13 +174,6 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
                             ],
                           )),
 
-
-                      //     () {
-                      //   _appManager.leave();
-                      //   selfLeave = true;
-                      //   isRoomEnded = true;
-                      //   Navigator.pop(context);
-                      // },
                       color: Colors.red,
                     ),
                   ),
@@ -259,8 +210,6 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
   }
 
   Widget localPeerVideo(HMSVideoTrack? localTrack) {
-    print("local peer --> $localPeer");
-    print("local track --> $localTrack");
     return Container(
       height: 200,
       width: 150,
