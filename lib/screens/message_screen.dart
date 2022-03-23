@@ -60,9 +60,6 @@ class _MessageScreenState extends State<MessageScreen> {
                 Expanded(
                   child: Observer(
                     builder: (_) {
-                      // if (!_appManager.isMeetingStarted) {
-                      //   return const SizedBox();
-                      // }
                       if (_messages.isEmpty) {
                         return Center(child: const Text('No messages'));
                       }
@@ -137,25 +134,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         width: 230,
                       ),
                       GestureDetector(
-                        onTap: () {
-                          if (messageTextController.text.trim().isNotEmpty) {
-                            SdkInitializer.hmssdk.sendBroadcastMessage(
-                                message: messageTextController.text);
-                            setState(() {
-                              _messages.add(Message(
-                                  message: messageTextController.text.trim(),
-                                  time: DateTime.now().toString(),
-                                  peerId: "localUser",
-                                  senderName: localPeer.name));
-                            });
-                            messageTextController.text = "";
-                          }
-
-                          // String message = messageTextController.text;
-                          // if (message.isEmpty) return;
-                          // _appManager.sendBroadcastMessage(message);
-                          // messageTextController.clear();
-                        },
+                        onTap: () { },
                         child: const Icon(
                           Icons.send,
                           size: 40.0,

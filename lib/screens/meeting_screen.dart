@@ -49,43 +49,13 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
     // initMeeting();
   }
 
-  // Future<bool> join(HMSSDK hmssdk, String role, String username) async {
-  //   String roomId = Constants.roomId;
-  //   Uri endPoint = Uri.parse("https://prod-in.100ms.live/hmsapi/telehealthapp.app.100ms.live/api/token");
-  //   Response response = await post(endPoint, body: {
-  //     'user_id': username,
-  //     'room_id':roomId,
-  //     'role': role
-  //   });
-  //   var body = json.decode(response.body);
-  //   print(body);
-  //   if (body == null || body['token'] == null) {
-  //     return false;
-  //   }
-  //
-  //   HMSConfig config = HMSConfig(authToken: body['token'], userName: "user");
-  //   await hmssdk.join(config: config);
-  //   return true;
-  // }
-
-
-
   @override
   Widget build(BuildContext context) {
 
-
-    final _isVideoOff = context.select<AppManager, bool>(
-            (user) => user.remoteVideoTrack?.isMute ?? true);
-    final _isAudioOff = context.select<AppManager, bool>(
-            (user) => user.remoteAudioTrack?.isMute ?? true);
-    final _peer =
-    context.select<AppManager, HMSPeer?>((user) => user.remotePeer);
     final remoteTrack = context
         .select<AppManager, HMSTrack?>((user) => user.remoteVideoTrack);
     final localVideoTrack = context
         .select<AppManager, HMSVideoTrack?>((user) => user.localVideoTrack);
-    bool isNewMessage =
-    context.select<AppManager, bool>((user) => user.isNewMessage);
 
 
     return Scaffold(
@@ -203,26 +173,14 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
                             actions: [
                               ElevatedButton(
                                   style: ElevatedButton.styleFrom(primary: Colors.amberAccent),
-                                  onPressed: ()  {
-                                    SdkInitializer.hmssdk.leave();
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  },
+                                  onPressed: ()  { },
                                   child: const Text('Yes', style: TextStyle(fontSize: 20))),
                               ElevatedButton(
-                                  onPressed: () => Navigator.pop(context, false),
+                                  onPressed: () {},
                                   child:
                                   const Text('Cancel', style: TextStyle(fontSize: 24))),
                             ],
                           )),
-
-
-                      //     () {
-                      //   _appManager.leave();
-                      //   selfLeave = true;
-                      //   isRoomEnded = true;
-                      //   Navigator.pop(context);
-                      // },
                       color: Colors.red,
                     ),
                   ),
@@ -259,8 +217,7 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
   }
 
   Widget localPeerVideo(HMSVideoTrack? localTrack) {
-    print("local peer --> $localPeer");
-    print("local track --> $localTrack");
+
     return Container(
       height: 200,
       width: 150,

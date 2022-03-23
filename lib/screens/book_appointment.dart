@@ -47,17 +47,6 @@ class _BookAppointmentState extends State<BookAppointment> {
     });
   }
 
-// This method validates the user input before creating the appointment.
-  void _submitData() {
-    final username = _usernameController.text;
-
-    if (username.isEmpty || _selectedDate == null) {
-      return;
-    }
-
-    _addNewAppointment();
-    Navigator.of(context).pop();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,7 +120,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                     ),
                   ),
                   RaisedButton(
-                    onPressed: () => _submitData(),
+                    onPressed: () {},
                     child: const Text('Book'),
                     textColor: Theme.of(context).textTheme.button!.color,
                     color: Theme.of(context).primaryColor,
