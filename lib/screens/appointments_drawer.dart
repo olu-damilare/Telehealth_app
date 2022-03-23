@@ -92,13 +92,17 @@ class _AppointmentsDrawerState extends State<AppointmentsDrawer> {
      );
 
     }
-    return Column(children: appointmentsWidget);
+    return Column(
+        children: appointmentsWidget
+    );
+
   }
 
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
+
         child: Column(
           children: [
             AppBar(
