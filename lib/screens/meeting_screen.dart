@@ -94,7 +94,7 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
                         (remoteTrack != null)
                             ? HMSVideoView(track: remoteTrack as HMSVideoTrack, matchParent: false)
                             : const Center(
-                            child: Text('Waiting for the other part to join!'))
+                            child: Text('Waiting for the Doctor to join!'))
                     ),
 
                   ],
