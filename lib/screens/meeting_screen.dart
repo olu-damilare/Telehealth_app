@@ -84,7 +84,8 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
             padding:
             const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
             child: Center(
-              child: SizedBox(
+              child: Container(
+                color: Colors.purpleAccent,
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -94,7 +95,12 @@ class _MeetingState extends State<Meeting> with WidgetsBindingObserver {
                         (remoteTrack != null)
                             ? HMSVideoView(track: remoteTrack as HMSVideoTrack, matchParent: false)
                             : const Center(
-                            child: Text('Waiting for the Doctor to join!'))
+                            child:
+                            Icon(Icons.mic,
+                            size: 40,
+                            )
+                            // Text('Waiting for the Doctor to join!')
+                        )
                     ),
 
                   ],
