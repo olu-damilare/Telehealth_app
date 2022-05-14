@@ -21,5 +21,5 @@ This repo contains the source code to a telehealth app that leverages the audio/
 - Run the application using an android emulator of device.
 
 ## Author
-[Damilare Jolayemi](github.com/olu-damilare)
+[Damilare Jolayemi](https://github.com/olu-damilare)
 
