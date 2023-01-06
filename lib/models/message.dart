@@ -4,5 +4,9 @@ class Message {
   String senderName;
   String time;
 
-  Message({required this.message, required this.peerId, required this.senderName, required this.time});
+  Message(
+      {required this.message,
+      required this.peerId,
+      required this.senderName,
+      required this.time});
 }

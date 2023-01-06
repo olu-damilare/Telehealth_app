@@ -6,9 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import 'package:http/http.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:telehealth_app/screens/landing_page.dart';
-import 'package:telehealth_app/screens/meeting_screen.dart';
 import 'package:telehealth_app/setup/app_manager.dart';
 import 'package:telehealth_app/setup/sdkinitializer.dart';
 
@@ -18,15 +16,13 @@ void main() {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.purple,
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.purple,
   ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -44,19 +40,17 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-   @override
+  @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
   late AppManager _appManager;
   final TextEditingController _roleController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final FocusNode _roleNode = FocusNode();
   final FocusNode _usernameNode = FocusNode();
   bool isLoading = false;
-
 
   @override
   void initState() {
@@ -69,11 +63,10 @@ class _HomePageState extends State<HomePage> {
       isLoading = true;
     });
 
-
-    bool ans = await join(SdkInitializer.hmssdk, _roleController.text, _usernameController.text);
+    bool ans = await join(
+        SdkInitializer.hmssdk, _roleController.text, _usernameController.text);
     if (!ans) {
       return false;
-
     }
     _appManager = AppManager();
     _appManager.startListen();
@@ -85,12 +78,10 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> join(HMSSDK hmssdk, String role, String username) async {
     String roomId = Constants.roomId;
-    Uri endPoint = Uri.parse("https://prod-in.100ms.live/hmsapi/telehealthapp.app.100ms.live/api/token");
-    Response response = await post(endPoint, body: {
-      'user_id': username,
-      'room_id':roomId,
-      'role': role
-    });
+    Uri endPoint = Uri.parse(
+        "https://prod-in.100ms.live/hmsapi/telehealthapp.app.100ms.live/api/token");
+    Response response = await post(endPoint,
+        body: {'user_id': username, 'room_id': roomId, 'role': role});
     var body = json.decode(response.body);
     if (body == null || body['token'] == null) {
       return false;
@@ -100,7 +91,6 @@ class _HomePageState extends State<HomePage> {
     await hmssdk.join(config: config);
     return true;
   }
-
 
   void requestPermissions() async {
     await Permission.camera.request();
@@ -114,13 +104,9 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-
-      body: LandingPage()
+    return Scaffold(body: LandingPage()
         // Container(
         //   child: ListView(
         //           children: <Widget>[
@@ -202,14 +188,15 @@ class _HomePageState extends State<HomePage> {
         //           ]
         //       ),
         // )
-    );
+        );
   }
 }
 
-class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

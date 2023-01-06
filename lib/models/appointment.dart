@@ -1,4 +1,4 @@
-class Appointment{
+class Appointment {
   String username;
   String appointmentName;
   DateTime appointmentDate;

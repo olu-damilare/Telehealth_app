@@ -4,7 +4,6 @@ import 'package:telehealth_app/models/message.dart';
 import 'package:telehealth_app/setup/sdkinitializer.dart';
 
 class AppManager extends ChangeNotifier implements HMSUpdateListener {
-
   //To store remote peer tracks and peer objects
   HMSTrack? remoteVideoTrack;
   HMSPeer? remotePeer;
@@ -13,7 +12,6 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
   bool _disposed = false;
   List<Message> messages = [];
   late HMSPeer localPeer;
-
 
   //To dispose the objects when user leaves the room
   @override
@@ -56,13 +54,11 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
   //Method to listen to remote peer messages
   @override
   void onMessage({required HMSMessage message}) {
-    Message _newMessage =
-    Message(
+    Message _newMessage = Message(
         message: message.message,
         peerId: message.sender!.peerId,
         time: message.time,
-        senderName: message.sender!.name
-    );
+        senderName: message.sender!.name);
     messages.add(_newMessage);
     notifyListeners();
   }
@@ -71,15 +67,15 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
   @override
   void onPeerUpdate({required HMSPeer peer, required HMSPeerUpdate update}) {
     switch (update) {
-    //To handle when peer joins
-    //We are setting up remote peers audio and video track here.
+      //To handle when peer joins
+      //We are setting up remote peers audio and video track here.
       case HMSPeerUpdate.peerJoined:
         messages = [];
         remotePeer = peer;
         remoteAudioTrack = peer.audioTrack;
         remoteVideoTrack = peer.videoTrack;
         break;
-    // Setting up the remote peer to null so that we can render UI accordingly
+      // Setting up the remote peer to null so that we can render UI accordingly
       case HMSPeerUpdate.peerLeft:
         messages = [];
         remotePeer = null;
@@ -125,33 +121,35 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
   @override
   void onTrackUpdate(
       {required HMSTrack track,
-        required HMSTrackUpdate trackUpdate,
-        required HMSPeer peer}) {
+      required HMSTrackUpdate trackUpdate,
+      required HMSPeer peer}) {
     switch (trackUpdate) {
-    //Setting up tracks for remote peers
-    //When a track is added for the first time
+      //Setting up tracks for remote peers
+      //When a track is added for the first time
       case HMSTrackUpdate.trackAdded:
         if (track.kind == HMSTrackKind.kHMSTrackKindAudio) {
           if (!track.peer!.isLocal) remoteAudioTrack = track;
         } else if (track.kind == HMSTrackKind.kHMSTrackKindVideo) {
-          if (!track.peer!.isLocal)
+          if (!track.peer!.isLocal) {
             remoteVideoTrack = track;
-          else
+          } else {
             localVideoTrack = track as HMSVideoTrack;
+          }
         }
         break;
-    //When a track is removed
+      //When a track is removed
       case HMSTrackUpdate.trackRemoved:
         if (track.kind == HMSTrackKind.kHMSTrackKindAudio) {
           if (!track.peer!.isLocal) remoteAudioTrack = null;
         } else if (track.kind == HMSTrackKind.kHMSTrackKindVideo) {
-          if (!track.peer!.isLocal)
+          if (!track.peer!.isLocal) {
             remoteVideoTrack = null;
-          else
+          } else {
             localVideoTrack = null;
+          }
         }
         break;
-    //Case when someone mutes audio/video
+      //Case when someone mutes audio/video
       case HMSTrackUpdate.trackMuted:
         if (track.kind == HMSTrackKind.kHMSTrackKindAudio) {
           if (!track.peer!.isLocal) remoteAudioTrack = track;
@@ -163,7 +161,7 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
           }
         }
         break;
-    //Case when someone unmutes audio/video
+      //Case when someone unmutes audio/video
       case HMSTrackUpdate.trackUnMuted:
         if (track.kind == HMSTrackKind.kHMSTrackKindAudio) {
           if (!track.peer!.isLocal) remoteAudioTrack = track;
