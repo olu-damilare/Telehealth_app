@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:hmssdk_flutter/hmssdk_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:telehealth_app/models/message.dart';
 import 'package:telehealth_app/setup/app_manager.dart';
-import 'package:telehealth_app/setup/sdkinitializer.dart';
 
 class MessageScreen extends StatefulWidget {
-  MessageScreen({Key? key}) : super(key: key);
+  const MessageScreen({Key? key}) : super(key: key);
 
   @override
   _MessageScreenState createState() => _MessageScreenState();
@@ -29,7 +27,7 @@ class _MessageScreenState extends State<MessageScreen> {
       child: SafeArea(
           bottom: true,
           minimum:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -61,7 +59,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   child: Observer(
                     builder: (_) {
                       if (_messages.isEmpty) {
-                        return Center(child: const Text('No messages'));
+                        return const Center(child: Text('No messages'));
                       }
                       return ListView.separated(
                         itemCount: _messages.length,
@@ -84,8 +82,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                       ),
                                     ),
                                     Text(
-                                      _messages[index].time
-                                          .toString(),
+                                      _messages[index].time.toString(),
                                       style: const TextStyle(
                                           fontSize: 10.0,
                                           color: Colors.black,
@@ -97,8 +94,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                   height: 10.0,
                                 ),
                                 Text(
-                                  _messages[index].message
-                                      .toString(),
+                                  _messages[index].message.toString(),
                                   style: const TextStyle(
                                       fontSize: 14.0,
                                       color: Colors.black,
@@ -134,7 +130,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         width: 230,
                       ),
                       GestureDetector(
-                        onTap: () { },
+                        onTap: () {},
                         child: const Icon(
                           Icons.send,
                           size: 40.0,
@@ -153,6 +149,6 @@ class _MessageScreenState extends State<MessageScreen> {
 void chatMessages(BuildContext context, AppManager appManager) {
   showModalBottomSheet(
       context: context,
-      builder: (ctx) => MessageScreen(),
+      builder: (ctx) => const MessageScreen(),
       isScrollControlled: true);
 }
