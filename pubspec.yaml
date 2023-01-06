@@ -37,11 +37,10 @@ dependencies:
   hmssdk_flutter: 0.6.0
   http: 0.13.4
   provider: 6.0.2
-  mobx: 2.0.6+1
-  flutter_mobx: 2.0.4
   permission_handler: 9.0.2
   intl: 0.17.0
-
+  flash: 2.0.3+2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
