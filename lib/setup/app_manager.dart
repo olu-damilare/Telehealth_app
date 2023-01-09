@@ -13,6 +13,11 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
   List<Message> messages = [];
   late HMSPeer localPeer;
 
+  //Method to attach listener to sdk
+  void startListen() {
+    SdkInitializer.hmssdk.addUpdateListener(listener: this);
+  }
+
   //To dispose the objects when user leaves the room
   @override
   void dispose() {
@@ -28,17 +33,6 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
     }
   }
 
-  //Method to listen to change track request
-  @override
-  void onChangeTrackStateRequest(
-      {required HMSTrackChangeRequest hmsTrackChangeRequest}) {}
-
-  //Method to listen to Error Updates
-  @override
-  void onError({required HMSException error}) {
-    print(error.message);
-  }
-
   //Method to listen to local Peer join update
   @override
   void onJoin({required HMSRoom room}) {
@@ -49,18 +43,6 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
         break;
       }
     }
-  }
-
-  //Method to listen to remote peer messages
-  @override
-  void onMessage({required HMSMessage message}) {
-    Message _newMessage = Message(
-        message: message.message,
-        peerId: message.sender!.peerId,
-        time: message.time,
-        senderName: message.sender!.name);
-    messages.add(_newMessage);
-    notifyListeners();
   }
 
   //Method to listen to peer Updates we are only using peerJoined and peerLeft updates here
@@ -95,27 +77,6 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
     }
     notifyListeners();
   }
-
-  //Method to listen when the reconnection is successful
-  @override
-  void onReconnected() {}
-
-  //Method to listen while reconnection
-  @override
-  void onReconnecting() {}
-
-  //Method to be listened when remote peer remove local peer from room
-  @override
-  void onRemovedFromRoom(
-      {required HMSPeerRemovedFromPeer hmsPeerRemovedFromPeer}) {}
-
-  //Method to listen to role change request
-  @override
-  void onRoleChangeRequest({required HMSRoleChangeRequest roleChangeRequest}) {}
-
-  //Method to listen to room updates
-  @override
-  void onRoomUpdate({required HMSRoom room, required HMSRoomUpdate update}) {}
 
   //Method to get Track Updates of all the peers
   @override
@@ -185,12 +146,51 @@ class AppManager extends ChangeNotifier implements HMSUpdateListener {
     notifyListeners();
   }
 
+  //Method to listen to remote peer messages
+  @override
+  void onMessage({required HMSMessage message}) {
+    Message _newMessage = Message(
+        message: message.message,
+        peerId: message.sender!.peerId,
+        time: message.time,
+        senderName: message.sender!.name);
+    messages.add(_newMessage);
+    notifyListeners();
+  }
+
+  //Method to listen to Error Updates
+  @override
+  void onError({required HMSException error}) {
+    print(error.message);
+  }
+
   //Method to get the list of current speakers
   @override
   void onUpdateSpeakers({required List<HMSSpeaker> updateSpeakers}) {}
 
-  //Method to attach listener to sdk
-  void startListen() {
-    SdkInitializer.hmssdk.addUpdateListener(listener: this);
-  }
+  //Method to listen to room updates
+  @override
+  void onRoomUpdate({required HMSRoom room, required HMSRoomUpdate update}) {}
+
+  //Method to listen when the reconnection is successful
+  @override
+  void onReconnected() {}
+
+  //Method to listen while reconnection
+  @override
+  void onReconnecting() {}
+
+  //Method to be listened when remote peer remove local peer from room
+  @override
+  void onRemovedFromRoom(
+      {required HMSPeerRemovedFromPeer hmsPeerRemovedFromPeer}) {}
+
+  //Method to listen to role change request
+  @override
+  void onRoleChangeRequest({required HMSRoleChangeRequest roleChangeRequest}) {}
+
+  //Method to listen to change track request
+  @override
+  void onChangeTrackStateRequest(
+      {required HMSTrackChangeRequest hmsTrackChangeRequest}) {}
 }
