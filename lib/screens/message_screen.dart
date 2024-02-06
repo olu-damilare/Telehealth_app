@@ -5,7 +5,7 @@ import 'package:telehealth_app/setup/app_manager.dart';
 import 'package:telehealth_app/setup/sdkinitializer.dart';
 
 class MessageScreen extends StatefulWidget {
-  MessageScreen({Key? key}) : super(key: key);
+  const MessageScreen({Key? key}) : super(key: key);
 
   @override
   _MessageScreenState createState() => _MessageScreenState();
@@ -25,7 +25,7 @@ class _MessageScreenState extends State<MessageScreen> {
       child: SafeArea(
           bottom: true,
           minimum:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -54,58 +54,55 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
                 Expanded(
-                  child:
-                     _messages.isEmpty ?
-                        Center(child: const Text('No messages'))
-                  : ListView.separated(
-                        itemCount: _messages.length,
-                        itemBuilder: (itemBuilder, index) {
-                          return Container(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        _messages[index].senderName,
+                  child: _messages.isEmpty
+                      ? const Center(child: Text('No messages'))
+                      : ListView.separated(
+                          itemCount: _messages.length,
+                          itemBuilder: (itemBuilder, index) {
+                            return Container(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _messages[index].senderName,
+                                          style: const TextStyle(
+                                              fontSize: 10.0,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Text(
+                                        _messages[index].time.toString(),
                                         style: const TextStyle(
                                             fontSize: 10.0,
                                             color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Text(
-                                      _messages[index].time
-                                          .toString(),
-                                      style: const TextStyle(
-                                          fontSize: 10.0,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w900),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 10.0,
-                                ),
-                                Text(
-                                  _messages[index].message
-                                      .toString(),
-                                  style: const TextStyle(
-                                      fontSize: 14.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Divider();
-                        },
-                      ),
+                                            fontWeight: FontWeight.w900),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  Text(
+                                    _messages[index].message.toString(),
+                                    style: const TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Divider();
+                          },
+                        ),
                 ),
                 Container(
                   color: Colors.amberAccent,
@@ -158,6 +155,6 @@ class _MessageScreenState extends State<MessageScreen> {
 void chatMessages(BuildContext context, AppManager appManager) {
   showModalBottomSheet(
       context: context,
-      builder: (ctx) => MessageScreen(),
+      builder: (ctx) => const MessageScreen(),
       isScrollControlled: true);
 }

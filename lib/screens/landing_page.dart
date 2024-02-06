@@ -6,7 +6,6 @@ import 'appointments_drawer.dart';
 import 'book_appointment.dart';
 
 class LandingPage extends StatefulWidget {
-
   @override
   State<LandingPage> createState() => _LandingPageState();
 }
@@ -18,48 +17,41 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       drawer: appointmentsDrawer,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(50.0),
+            const Padding(
+              padding: EdgeInsets.all(50.0),
               child: Text(
                 "100ms Telehealth App",
-                style: TextStyle(
-                  fontSize: 60,
-                  fontWeight: FontWeight.bold
-                ),
-            textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Container(
+            SizedBox(
               height: 50,
               width: 200,
               child: RaisedButton(
-                color: Colors.amber,
-                child: Text(
-                  "Book Appointment",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20
+                  color: Colors.amber,
+                  child: const Text(
+                    "Book Appointment",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
                   ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (_) => ListenableProvider.value(value: _appManager, child: BookAppointment(appointmentsDrawer)))
-
-                  );
-                }
-              ),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => ListenableProvider.value(
+                            value: _appManager,
+                            child: BookAppointment(appointmentsDrawer))));
+                  }),
             )
           ],
         ),
